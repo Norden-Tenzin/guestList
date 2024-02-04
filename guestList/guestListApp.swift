@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct guestListApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SplashView()
+                .environment(AuthenticationViewModel(fcm: delegate.fcm))
         }
     }
 }

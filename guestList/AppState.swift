@@ -44,9 +44,9 @@ class AppState {
                 tokens = documents.compactMap { queryDocumentSnapshot -> Token? in
                     return try? queryDocumentSnapshot.data(as: Token.self)
                 }
-//                tokens = tokens.filter { token in
-//                    token.id != guest.uid
-//                }
+                tokens = tokens.filter { token in
+                    token.id != guest.uid
+                }
                 print(tokens)
 
                 for token in tokens {

@@ -19,7 +19,7 @@ struct HomeTabView: View {
                     GuestListView()
                         .tag("GuestList")
                         .tabItem {
-                        Image(systemName: "fork.knife")
+                        Image(systemName: "list.bullet.clipboard.fill")
                     }
                     SettingsView()
                         .tag("Settings")

@@ -17,7 +17,7 @@ struct SplashView: View {
                 AuthenticatedView()
                     .environment(appState)
             } else {
-                Color(.accent)
+                Color.black
                     .ignoresSafeArea()
             }
         }

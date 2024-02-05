@@ -91,9 +91,9 @@ struct GuestListView: View {
                                         await appState.updateGuest(guest: guest, data: ["isArchived": true])
                                     }
                                 } label: {
-                                    Text("Archive")
+                                    Text("Arrived")
                                 }
-                                    .tint(Color.orange)
+                                    .tint(Color.red)
                             }
                         }
                     } header: {
@@ -127,9 +127,9 @@ struct GuestListView: View {
                                         await appState.updateGuest(guest: guest, data: ["isArchived": true])
                                     }
                                 } label: {
-                                    Text("Archive")
+                                    Text("Arrived")
                                 }
-                                    .tint(Color.orange)
+                                    .tint(Color.red)
                             }
                         }
                     } header: {

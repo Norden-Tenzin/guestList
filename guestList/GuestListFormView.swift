@@ -86,7 +86,7 @@ struct GuestListFormView: View {
                     Text("ADD GUEST")
                     Spacer()
                 }
-                    .foregroundStyle(Color.black)
+                    .foregroundStyle(Color.white)
             }
                 .listRowBackground(Color(.accent))
         }

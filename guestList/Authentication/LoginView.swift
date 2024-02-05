@@ -35,10 +35,9 @@ struct LoginView: View {
                 Color.black
                     .ignoresSafeArea()
                 VStack {
-                    Rectangle()
-                        .fill(Color(.accent))
+                    Image("haferl_logo")
                         .frame(width: 200, height: 200)
-                        .padding(.top, 20)
+                        .padding(.top, 50)
                     Spacer()
                 }
                 
@@ -135,8 +134,8 @@ struct LoginView: View {
                                 .foregroundStyle(Color(.accent))
                                 .frame(height: 50)
                             Text(loginState == .login ? "LOGIN" : "SIGN UP")
-                                .foregroundStyle(Color.black)
-                                .fontWeight(.black)
+                                .foregroundStyle(Color.white)
+                                .fontWeight(.medium)
                         }
                     }
                         .buttonStyle(.plain)
@@ -149,7 +148,7 @@ struct LoginView: View {
                         }
                     }, label: {
                             Text(loginState == .login ? "No Account? Signup here!" : "Have an Account? Login here!")
-                                .fontWeight(.bold)
+                                .fontWeight(.medium)
                         })
                         .tint(Color.white)
                 }

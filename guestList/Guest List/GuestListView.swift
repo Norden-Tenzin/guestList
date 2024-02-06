@@ -28,7 +28,7 @@ struct GuestListView: View {
                     }
                         .buttonStyle(.plain)
                         .popover(isPresented: $presentPopover) {
-                        DatePicker("", selection: $selection, in: ...Date.now, displayedComponents: [.date])
+                        DatePicker("", selection: $selection, displayedComponents: [.date])
                             .datePickerStyle(.graphical)
                             .frame(width: 350)
                             .presentationCompactAdaptation(.popover)

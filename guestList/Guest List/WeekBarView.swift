@@ -18,25 +18,26 @@ struct WeekBarView: View {
         HStack {
             ForEach(week, id: \.self) { date in
                 if let last = week.last {
-                    if date <= today {
-                        WeekBarItem(date: date, selection: $selection, today: today)
-                            .onTapGesture {
-                            selection = date
-                        }
-                    } else {
-                        WeekBarItem(date: date, selection: $selection, today: today)
-                            .onTapGesture {
-                            presentAlert = true
-                        }
+//                    if date <= today {
+//                        WeekBarItem(date: date, selection: $selection, today: today)
+//                            .onTapGesture {
+//                            selection = date
+//                        }
+//                    } else {
+//                        WeekBarItem(date: date, selection: $selection, today: today)
+//                            .onTapGesture {
+//                            presentAlert = true
+//                        }
+//                    }
+                    WeekBarItem(date: date, selection: $selection, today: today)
+                        .onTapGesture {
+                        selection = date
                     }
                     if last != date {
                         Spacer()
                     }
                 }
             }
-        }
-            .alert(isPresented: $presentAlert) {
-            Alert(title: Text("You can't select future date"), dismissButton: .default(Text("OK")))
         }
             .onAppear() {
             today = Date.now
@@ -56,7 +57,6 @@ struct WeekBarView: View {
             let todaysDay = dateFormatter.string(from: today)
 
             for index in [0, 1, 2, 3, 4, 5, 6] {
-
                 let calendar = Calendar.current
 
                 // Define the date components to subtract
@@ -124,3 +124,8 @@ struct WeekBarItem: View {
         }
     }
 }
+
+#Preview(body: {
+    @State var selection: Date = Date.now
+    return WeekBarView(selection: $selection)
+})

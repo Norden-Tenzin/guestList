@@ -12,6 +12,23 @@ import FirebaseMessaging
 
 @Observable
 class AppState {
+    var firstName: String {
+        get {
+            return UserDefaults.standard.string(forKey: "FIRST_NAME") ?? ""
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "FIRST_NAME")
+        }
+    }
+    var lastName: String {
+        get {
+            return UserDefaults.standard.string(forKey: "LAST_NAME") ?? ""
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "LAST_NAME")
+        }
+    }
+
     private let db = Firestore.firestore()
     private let messageing = Messaging.messaging()
     var guests: [Guest] = [Guest]()
@@ -32,25 +49,18 @@ class AppState {
     func addGuest(guest: Guest) {
         do {
             try db.collection("Guests").addDocument(from: guest)
-
-            print("IN ADDING GUEST")
-
             // TODO: ADD Notifications
             Task {
                 var tokens: [Token] = []
-                print("IN ADD")
                 let documents = try await db.collection("Tokens").getDocuments().documents
-                print("Doc: \(documents)")
                 tokens = documents.compactMap { queryDocumentSnapshot -> Token? in
                     return try? queryDocumentSnapshot.data(as: Token.self)
                 }
                 tokens = tokens.filter { token in
                     token.id != guest.uid
                 }
-                print(tokens)
-
                 for token in tokens {
-                    sendPushNotification(to: token.fcm_token, title: "", body: "A new Guest has been added")
+                    sendPushNotification(to: token.fcm_token, title: "", body: "\(getName(firstName: firstName, lastName: lastName)) added a new Guest")
                 }
             }
         } catch {
@@ -68,24 +78,6 @@ class AppState {
             }
         }
     }
-
-//    func sendPushNotification(to token: String, title: String, body: String) {
-//        let urlString = "https://fcm.googleapis.com/fcm/send"
-//        let serverKey = "AAAASODo0bQ:APA91bHhgLqrHpK-BEblbW1uLUuJgnuWDX6YFGM5YvcyvgbqFrSJt74EkrOnAMquUnOn3lMy-rEBOMs75e1CAMSV8U14DnRHSoVB1aeshQfHe88o8ciwKmQOIADLZ5Lx0lh9t7sEXug_"
-//        let url = URL(string: urlString)!
-//        let paramString: [String: Any] = ["to": token,
-//            "notification": ["title": title, "body": body],
-//            "data": ["user": "test_id"]
-//        ]
-//
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//        request.httpBody = try? JSONSerialization.data(withJSONObject: paramString, options: [.prettyPrinted])
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.setValue("key=\(serverKey)", forHTTPHeaderField: "Authorization")
-//
-//        print(request)
-//    }
 
     func sendPushNotification(to fcm: String, title: String, body: String) {
         let serverKey = "AAAASODo0bQ:APA91bHhgLqrHpK-BEblbW1uLUuJgnuWDX6YFGM5YvcyvgbqFrSJt74EkrOnAMquUnOn3lMy-rEBOMs75e1CAMSV8U14DnRHSoVB1aeshQfHe88o8ciwKmQOIADLZ5Lx0lh9t7sEXug_"
@@ -131,4 +123,12 @@ struct Token: Identifiable, Codable, Equatable {
     @DocumentID var id: String?
     var fcm_token: String
     var timestamp: Date
+}
+
+func getName(firstName: String, lastName: String) -> String {
+    if !firstName.isEmpty {
+        return "\(firstName) \(lastName.first?.description.uppercased() ?? "")"
+    } else {
+        return "Anonymous"
+    }
 }

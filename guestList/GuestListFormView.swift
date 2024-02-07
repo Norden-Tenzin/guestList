@@ -34,6 +34,7 @@ struct GuestListFormView: View {
     @State var isVip: Bool = false
     @State var isFreeEntry: Bool = false
     @State var isDiscount: Bool = false
+    @State var additionalInfo: String = ""
 
     var body: some View {
         List {
@@ -63,21 +64,27 @@ struct GuestListFormView: View {
                 Toggle("VIP", isOn: $isVip)
                 Toggle("Free Entry", isOn: $isFreeEntry)
                     .onChange(of: isFreeEntry) { oldValue, newValue in
-                        if newValue {
-                            isDiscount = false
-                        }
+                    if newValue {
+                        isDiscount = false
                     }
+                }
                 Toggle("50% Off", isOn: $isDiscount)
                     .onChange(of: isDiscount) { oldValue, newValue in
-                        if newValue {
-                            isFreeEntry = false
-                        }
+                    if newValue {
+                        isFreeEntry = false
                     }
+                }
             }
                 .tint(Color(.accent))
 
+            Section {
+                TextEditor(text: $additionalInfo)
+                    .frame(minHeight: 80)
+            } header: {
+                Text("Additional Info".uppercased())
+            }
             Button {
-                let newGuest = Guest(uid: auth.uid, dateCreated: dateSelection, name: name, guestCount: guestCount, tableSelection: tableSelection, isVip: isVip, isFreeEntry: isFreeEntry, isDiscount: isDiscount, isArchived: false)
+                let newGuest = Guest(uid: auth.uid, dateCreated: dateSelection, name: name, guestCount: guestCount, tableSelection: tableSelection, isVip: isVip, isFreeEntry: isFreeEntry, isDiscount: isDiscount, isArchived: false, additionalInfo: additionalInfo)
                 appState.addGuest(guest: newGuest)
                 presentSheet = false
             } label: {

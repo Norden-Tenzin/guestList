@@ -19,6 +19,7 @@ struct Guest: Identifiable, Codable, Equatable {
     var isFreeEntry: Bool
     var isDiscount: Bool
     var isArchived: Bool
+    var additionalInfo: String
     
 //    init(uid: String, name: String, guestCount: Int, tableSelection: TableType, isVip: Bool, isFreeEntry: Bool, isDiscount: Bool) {
 //        self.uid = uid

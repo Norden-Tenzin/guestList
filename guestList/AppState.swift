@@ -68,6 +68,19 @@ class AppState {
         }
     }
 
+    func getNameFromUID(uid: String) async -> String {
+        do {
+            let document = try await db.collection("Users").document(uid).getDocument()
+            let data = document.data()
+            let firstName = data?["firstName"] as? String ?? ""
+            let lastName = data?["lastName"] as? String ?? ""
+            return getName(firstName: firstName, lastName: lastName)
+        } catch {
+            print(error.localizedDescription)
+            return "Anonymous"
+        }
+    }
+
     func updateGuest(guest: Guest, data: [String: Any]) async {
         if let id = guest.id {
             do {

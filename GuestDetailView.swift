@@ -8,48 +8,44 @@
 import SwiftUI
 
 struct GuestDetailView: View {
+    @Environment(AppState.self) var appState
     var guest: Guest
+
+    @State var authorName: String = ""
 
     var body: some View {
         List {
             Section {
-                Text(guest.name)
+                Text(guest.name.capitalized)
             } header: {
                 Text("Guest Name")
                     .foregroundStyle(Color(.accent))
             }
-            
-            Section {
-                Text(guest.guestCount.description)
-            } header: {
-                Text("Total Number Of Guests")
-                    .foregroundStyle(Color(.accent))
-            }
-            
+
             Section {
                 Text(guest.tableSelection.description)
             } header: {
                 Text("Reserved Table")
                     .foregroundStyle(Color(.accent))
             }
-            
+
             Section {
-                Text(guest.isVip ? "VIP" : "Guest")
+                Text(guest.additionalInfo)
             } header: {
-                Text("Guest Status")
+                Text("Additional Info")
                     .foregroundStyle(Color(.accent))
             }
-            
+
             Section {
-                if guest.isFreeEntry {
-                    Text("Free")
-                }
-                if guest.isDiscount {
-                    Text("50/50")
-                }
+                Text(authorName)
             } header: {
-                Text("Entry Fee")
+                Text("Author")
                     .foregroundStyle(Color(.accent))
+            }
+        }
+            .onAppear() {
+            Task {
+                authorName = await appState.getNameFromUID(uid: guest.uid)
             }
         }
     }

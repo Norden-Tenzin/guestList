@@ -18,7 +18,7 @@ struct GuestListView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                // MARK: - TOP NAV BAR
+                // MARK: - TOP BAR
                 HStack(spacing: 15) {
                     Button(action: {
                         self.presentPopover = true
@@ -51,9 +51,10 @@ struct GuestListView: View {
                         .foregroundStyle(Color.white)
                 })
                     .font(.system(size: 24))
-                    .padding()
+                    .padding([.horizontal, .bottom])
+                    .padding(.top, 8)
 
-                // MARK: - WEEK NAV BAR
+                // MARK: - WEEK BAR
                 WeekBarView(selection: $selection)
                     .padding(.horizontal, 10)
 
@@ -73,12 +74,22 @@ struct GuestListView: View {
                         ForEach(vipGuests) { guest in
                             ZStack {
                                 HStack {
-                                    Text(guest.name)
+                                    if guest.tableSelection == .dj {
+                                        Image(systemName: "table.furniture.fill")
+                                            .foregroundStyle(Color.yellow)
+                                    }
+                                    Text(guest.name.capitalized)
                                     if guest.guestCount > 1 {
                                         Text("+\(guest.guestCount - 1)")
                                     }
                                     Spacer()
-                                    Text(guest.isFreeEntry ? "Free" : "")
+
+                                    if guest.isFreeEntry {
+                                        Text("Free")
+                                    } else {
+                                        Image(systemName: "eurosign.circle.fill")
+                                            .foregroundStyle(Color.green)
+                                    }
                                 }
                                 NavigationLink(destination: GuestDetailView(guest: guest)) {
                                     EmptyView()

@@ -14,7 +14,7 @@ struct Guest: Identifiable, Codable, Equatable {
     var dateCreated: Date
     var name: String
     var guestCount: Int
-    var tableSelection: TableType
+    var tableSelection: String
     var isVip: Bool
     var isFreeEntry: Bool
     var isDiscount: Bool

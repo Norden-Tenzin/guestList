@@ -7,21 +7,23 @@
 
 import SwiftUI
 
-enum TableType: Identifiable, CaseIterable, Codable {
-    case None
-    case dj
+let tableType = [ "None", "Hauptbar: Office", "Hauptbar: Stufe", "Hauptbar: DJ", "Hauptbar: Vor DJ", "Hauptbar: Tanzfläche", "Hauptbar: Vor Säule", "Hauptbar: Neben Säule","Hauptbar: Hinter Säule", "New Bar: Bar Links", "New Bar: Außen", "New Bar: Toiletten", "New Bar: Bar Rechts", "Lounge: T31", "Lounge: T32", "Lounge: T33", "Lounge: T34", "Lounge: T41", "Lounge: T42", "Lounge: T43", "Lounge: T44", "Lounge: T45"]
 
-    var id: Self {
-        return self
-    }
-
-    var description: String {
-        switch self {
-        case .None: return "None"
-        case .dj: return "DJ Table"
-        }
-    }
-}
+//enum TableType: Identifiable, CaseIterable, Codable {
+//    case None
+//    case dj
+//
+//    var id: Self {
+//        return self
+//    }
+//
+//    var description: String {
+//        switch self {
+//        case .None: return "None"
+//        case .dj: return "DJ Table"
+//        }
+//    }
+//}
 
 struct GuestListFormView: View {
     @Environment(AuthenticationViewModel.self) var auth
@@ -30,7 +32,7 @@ struct GuestListFormView: View {
     var dateSelection: Date
     @State var name: String = ""
     @State var guestCount: Int = 1
-    @State var tableSelection: TableType = .None
+    @State var tableSelection: String = "None"
     @State var isVip: Bool = false
     @State var isFreeEntry: Bool = false
     @State var isDiscount: Bool = false
@@ -54,7 +56,7 @@ struct GuestListFormView: View {
 
             Section {
                 Picker("Table", selection: $tableSelection) {
-                    ForEach(TableType.allCases, id: \.id) { table in
+                    ForEach(tableType, id: \.self) { table in
                         Text("\(table.description)")
                     }
                 }

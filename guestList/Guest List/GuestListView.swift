@@ -74,7 +74,7 @@ struct GuestListView: View {
                         ForEach(vipGuests) { guest in
                             ZStack {
                                 HStack {
-                                    if guest.tableSelection == .dj {
+                                    if guest.tableSelection != "None" {
                                         Image(systemName: "table.furniture.fill")
                                             .foregroundStyle(Color.yellow)
                                     }
@@ -158,10 +158,10 @@ struct GuestListView: View {
                 GuestListFormView(presentSheet: $presentSheet, dateSelection: selection)
                     .presentationDetents([.fraction(0.55)])
             })
-                .background() {
-                Color(.bg)
-                    .ignoresSafeArea()
-            }
+//                .background() {
+//                Color(.bg)
+//                    .ignoresSafeArea()
+//            }
                 .onAppear() {
                 appState.fetchData()
             }

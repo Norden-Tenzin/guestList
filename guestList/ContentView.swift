@@ -1,5 +1,5 @@
 //
-//  SplashView.swift
+//  ContentView.swift
 //  guestList
 //
 //  Created by Tenzin Norden on 2/3/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SplashView: View {
+struct ContentView: View {
     @State var isActive: Bool = false
     @State var appState: AppState = AppState()
 
@@ -18,11 +18,15 @@ struct SplashView: View {
                     .environment(appState)
             } else {
                 Color.black
+                    .overlay(content: {
+                    Image("haferl_logo")
+                        .frame(width: 200, height: 200)
+                })
                     .ignoresSafeArea()
             }
         }
             .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 withAnimation(.easeOut(duration: 1.0)) {
                     self.isActive = true
                 }

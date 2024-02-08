@@ -13,7 +13,7 @@ struct guestListApp: App {
     
     var body: some Scene {
         WindowGroup {
-            SplashView()
+            ContentView()
                 .environment(AuthenticationViewModel(fcm: delegate.fcm))
         }
     }

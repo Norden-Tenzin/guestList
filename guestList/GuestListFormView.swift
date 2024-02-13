@@ -40,13 +40,15 @@ struct GuestListFormView: View {
     @State var additionalInfo: String = ""
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             HStack {
                 Button(action: {
                     dismiss()
                 }, label: {
                         Image(systemName: "arrowtriangle.left.circle.fill")
+                            .font(.system(size: 24))
                     })
+                    .padding([.leading, .top], 15)
                 Spacer()
             }
             List {

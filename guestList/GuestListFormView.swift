@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-let tableType = [ "None", "Hauptbar: Office", "Hauptbar: Stufe", "Hauptbar: DJ", "Hauptbar: Vor DJ", "Hauptbar: Tanzfläche", "Hauptbar: Vor Säule", "Hauptbar: Neben Säule","Hauptbar: Hinter Säule", "New Bar: Bar Links", "New Bar: Außen", "New Bar: Toiletten", "New Bar: Bar Rechts", "Lounge: T31", "Lounge: T32", "Lounge: T33", "Lounge: T34", "Lounge: T41", "Lounge: T42", "Lounge: T43", "Lounge: T44", "Lounge: T45"]
+let tableType = ["None", "Hauptbar: Office", "Hauptbar: Stufe", "Hauptbar: DJ", "Hauptbar: Vor DJ", "Hauptbar: Tanzfläche", "Hauptbar: Vor Säule", "Hauptbar: Neben Säule", "Hauptbar: Hinter Säule", "New Bar: Bar Links", "New Bar: Außen", "New Bar: Toiletten", "New Bar: Bar Rechts", "Lounge: T31", "Lounge: T32", "Lounge: T33", "Lounge: T34", "Lounge: T41", "Lounge: T42", "Lounge: T43", "Lounge: T44", "Lounge: T45"]
 
 //enum TableType: Identifiable, CaseIterable, Codable {
 //    case None
@@ -28,6 +28,7 @@ let tableType = [ "None", "Hauptbar: Office", "Hauptbar: Stufe", "Hauptbar: DJ",
 struct GuestListFormView: View {
     @Environment(AuthenticationViewModel.self) var auth
     @Environment(AppState.self) var appState
+    @Environment(\.dismiss) private var dismiss
     @Binding var presentSheet: Bool
     var dateSelection: Date
     @State var name: String = ""
@@ -39,69 +40,75 @@ struct GuestListFormView: View {
     @State var additionalInfo: String = ""
 
     var body: some View {
-        List {
-            Section {
-                TextField("Name", text: $name)
-            } header: {
-                Text ("Name")
+        VStack {
+            HStack {
+                Button(action: {
+                    dismiss()
+                }, label: {
+                        Image(systemName: "arrowtriangle.left.circle.fill")
+                    })
+                Spacer()
             }
-
-            Section {
-                Stepper(value: $guestCount, in: 1...50) {
-                    Text("\(guestCount)")
+            List {
+                Section {
+                    TextField("Name", text: $name)
+                } header: {
+                    Text ("Name")
                 }
-            } header: {
-                Text ("Total Guests")
-            }
-
-            Section {
-                Picker("Table", selection: $tableSelection) {
-                    ForEach(tableType, id: \.self) { table in
-                        Text("\(table.description)")
+                Section {
+                    Stepper(value: $guestCount, in: 1...50) {
+                        Text("\(guestCount)")
+                    }
+                } header: {
+                    Text ("Total Guests")
+                }
+                Section {
+                    Picker("Table", selection: $tableSelection) {
+                        ForEach(tableType, id: \.self) { table in
+                            Text("\(table.description)")
+                        }
                     }
                 }
-            }
-
-            Section {
-                Toggle("VIP", isOn: $isVip)
-                Toggle("Free Entry", isOn: $isFreeEntry)
-                    .onChange(of: isFreeEntry) { oldValue, newValue in
-                    if newValue {
-                        isDiscount = false
+                Section {
+                    Toggle("VIP", isOn: $isVip)
+                    Toggle("Free Entry", isOn: $isFreeEntry)
+                        .onChange(of: isFreeEntry) { oldValue, newValue in
+                        if newValue {
+                            isDiscount = false
+                        }
+                    }
+                    Toggle("50% Off", isOn: $isDiscount)
+                        .onChange(of: isDiscount) { oldValue, newValue in
+                        if newValue {
+                            isFreeEntry = false
+                        }
                     }
                 }
-                Toggle("50% Off", isOn: $isDiscount)
-                    .onChange(of: isDiscount) { oldValue, newValue in
-                    if newValue {
-                        isFreeEntry = false
+                    .tint(Color(.accent))
+                Section {
+                    TextEditor(text: $additionalInfo)
+                        .frame(minHeight: 80)
+                } header: {
+                    Text("Additional Info".uppercased())
+                }
+                Button {
+                    let newGuest = Guest(uid: auth.uid, dateCreated: dateSelection, name: name, guestCount: guestCount, tableSelection: tableSelection, isVip: isVip, isFreeEntry: isFreeEntry, isDiscount: isDiscount, isArchived: false, additionalInfo: additionalInfo)
+                    appState.addGuest(guest: newGuest)
+                    presentSheet = false
+                } label: {
+                    HStack {
+                        Spacer()
+                        Text("ADD GUEST")
+                        Spacer()
                     }
+                        .foregroundStyle(Color.white)
                 }
+                    .listRowBackground(Color(.accent))
             }
-                .tint(Color(.accent))
-
-            Section {
-                TextEditor(text: $additionalInfo)
-                    .frame(minHeight: 80)
-            } header: {
-                Text("Additional Info".uppercased())
+                .padding(.top, 10)
+                .background() {
+                Color(.systemBackground)
             }
-            Button {
-                let newGuest = Guest(uid: auth.uid, dateCreated: dateSelection, name: name, guestCount: guestCount, tableSelection: tableSelection, isVip: isVip, isFreeEntry: isFreeEntry, isDiscount: isDiscount, isArchived: false, additionalInfo: additionalInfo)
-                appState.addGuest(guest: newGuest)
-                presentSheet = false
-            } label: {
-                HStack {
-                    Spacer()
-                    Text("ADD GUEST")
-                    Spacer()
-                }
-                    .foregroundStyle(Color.white)
-            }
-                .listRowBackground(Color(.accent))
-        }
-            .padding(.top, 10)
-            .background() {
-            Color(.systemBackground)
         }
     }
 }

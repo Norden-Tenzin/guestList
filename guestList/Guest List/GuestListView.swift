@@ -69,26 +69,26 @@ struct GuestListView: View {
                         let vipGuests = appState.guests.filter { guest in
                             let isDateCorrect = (getDate(date: guest.dateCreated) == getDate(date: selection))
                             let searchFilter = searchText != "" ? guest.name.contains(searchText) : true
-                            return guest.isVip && isDateCorrect && searchFilter && !guest.isArchived
+                            let dosentHaveTable = guest.tableSelection == "None"
+                            return guest.isVip && isDateCorrect && searchFilter && !guest.isArchived && dosentHaveTable
                         }
                         ForEach(vipGuests) { guest in
                             ZStack {
                                 HStack {
-                                    if guest.tableSelection != "None" {
-                                        Image(systemName: "table.furniture.fill")
-                                            .foregroundStyle(Color.yellow)
-                                    }
+                                    Image("vip")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
                                     Text(guest.name.capitalized)
                                     if guest.guestCount > 1 {
                                         Text("+\(guest.guestCount - 1)")
                                     }
                                     Spacer()
-
                                     if guest.isFreeEntry {
                                         Text("Free")
                                     } else {
-                                        Image(systemName: "eurosign.circle.fill")
-                                            .foregroundStyle(Color.green)
+                                        Image("pay")
+                                            .resizable()
+                                            .frame(width: 30, height: 30)
                                     }
                                 }
                                 NavigationLink(destination: GuestDetailView(guest: guest)) {
@@ -112,10 +112,57 @@ struct GuestListView: View {
                     }
 
                     Section {
+                        let tabledGuests = appState.guests.filter { guest in
+                            let isDateCorrect = (getDate(date: guest.dateCreated) == getDate(date: selection))
+                            let searchFilter = searchText != "" ? guest.name.contains(searchText) : true
+                            let doesHaveTable = guest.tableSelection != "None"
+                            return isDateCorrect && searchFilter && !guest.isArchived && doesHaveTable
+                        }
+                        ForEach(tabledGuests) { guest in
+                            ZStack {
+                                HStack {
+                                    Image("table")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                    Text(guest.name.capitalized)
+                                    if guest.guestCount > 1 {
+                                        Text("+\(guest.guestCount - 1)")
+                                    }
+                                    Spacer()
+                                    if guest.isFreeEntry {
+                                        Text("Free")
+                                    } else {
+                                        Image("pay")
+                                            .resizable()
+                                            .frame(width: 30, height: 30)
+                                    }
+                                }
+                                NavigationLink(destination: GuestDetailView(guest: guest)) {
+                                    EmptyView()
+                                }
+                                    .opacity(0)
+                            }
+                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button {
+                                    Task {
+                                        await appState.updateGuest(guest: guest, data: ["isArchived": true])
+                                    }
+                                } label: {
+                                    Text("Arrived")
+                                }
+                                    .tint(Color.red)
+                            }
+                        }
+                    } header: {
+                        Text("TABLE RESERVATIONS")
+                    }
+
+                    Section {
                         let nonVipGuests = appState.guests.filter { guest in
                             let isDateCorrect = (getDate(date: guest.dateCreated) == getDate(date: selection))
                             let searchFilter = searchText != "" ? guest.name.contains(searchText) : true
-                            return !guest.isVip && isDateCorrect && searchFilter && !guest.isArchived
+                            let dosentHaveTable = guest.tableSelection == "None"
+                            return !guest.isVip && isDateCorrect && searchFilter && !guest.isArchived && dosentHaveTable
                         }
                         ForEach(nonVipGuests) { guest in
                             ZStack {
@@ -125,7 +172,13 @@ struct GuestListView: View {
                                         Text("+\(guest.guestCount - 1)")
                                     }
                                     Spacer()
-                                    Text(guest.isFreeEntry ? "Free" : "")
+                                    if guest.isFreeEntry {
+                                        Text("Free")
+                                    } else {
+                                        Image("pay")
+                                            .resizable()
+                                            .frame(width: 30, height: 30)
+                                    }
                                 }
                                 NavigationLink(destination: GuestDetailView(guest: guest)) {
                                     EmptyView()
@@ -162,7 +215,7 @@ struct GuestListView: View {
 //                Color(.bg)
 //                    .ignoresSafeArea()
 //            }
-                .onAppear() {
+            .onAppear() {
                 appState.fetchData()
             }
         }

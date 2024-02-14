@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65B1BDA82B7D12BC00248B69 /* TableDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B1BDA72B7D12BC00248B69 /* TableDetailView.swift */; };
 		65F987622B6E3E1D005962CE /* guestListApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F987612B6E3E1D005962CE /* guestListApp.swift */; };
 		65F987662B6E3E1E005962CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65F987652B6E3E1E005962CE /* Assets.xcassets */; };
 		65F9876A2B6E3E1E005962CE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65F987692B6E3E1E005962CE /* Preview Assets.xcassets */; };
@@ -53,6 +54,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		65B1BDA72B7D12BC00248B69 /* TableDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableDetailView.swift; sourceTree = "<group>"; };
 		65F9875E2B6E3E1D005962CE /* guestList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = guestList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65F987612B6E3E1D005962CE /* guestListApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = guestListApp.swift; sourceTree = "<group>"; };
 		65F987652B6E3E1E005962CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -114,8 +116,6 @@
 		65F987552B6E3E1C005962CE = {
 			isa = PBXGroup;
 			children = (
-				65F987B62B6EE07A005962CE /* GuestDetailView.swift */,
-				65F987B42B6EC128005962CE /* SearchBar.swift */,
 				65F9879C2B6E4EF1005962CE /* GoogleService-Info.plist */,
 				65F987602B6E3E1D005962CE /* guestList */,
 				65F987722B6E3E1E005962CE /* guestListTests */,
@@ -203,7 +203,10 @@
 			isa = PBXGroup;
 			children = (
 				65F987A42B6E5090005962CE /* GuestListView.swift */,
+				65F987B62B6EE07A005962CE /* GuestDetailView.swift */,
+				65B1BDA72B7D12BC00248B69 /* TableDetailView.swift */,
 				65F987A82B6E57F4005962CE /* WeekBarView.swift */,
+				65F987B42B6EC128005962CE /* SearchBar.swift */,
 			);
 			path = "Guest List";
 			sourceTree = "<group>";
@@ -359,6 +362,7 @@
 				65F987A52B6E5090005962CE /* GuestListView.swift in Sources */,
 				65F987AD2B6E5DE4005962CE /* Firebase.swift in Sources */,
 				65F987A12B6E4FE6005962CE /* HomeTabView.swift in Sources */,
+				65B1BDA82B7D12BC00248B69 /* TableDetailView.swift in Sources */,
 				65F987B52B6EC128005962CE /* SearchBar.swift in Sources */,
 				65F987622B6E3E1D005962CE /* guestListApp.swift in Sources */,
 				65F987B12B6EAEFC005962CE /* AppState.swift in Sources */,

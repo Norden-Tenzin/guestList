@@ -7,7 +7,30 @@
 
 import SwiftUI
 
-let tableType = ["None", "Hauptbar: Office", "Hauptbar: Stufe", "Hauptbar: DJ", "Hauptbar: Vor DJ", "Hauptbar: Tanzfläche", "Hauptbar: Vor Säule", "Hauptbar: Neben Säule", "Hauptbar: Hinter Säule", "New Bar: Bar Links", "New Bar: Außen", "New Bar: Toiletten", "New Bar: Bar Rechts", "Lounge: T31", "Lounge: T32", "Lounge: T33", "Lounge: T34", "Lounge: T41", "Lounge: T42", "Lounge: T43", "Lounge: T44", "Lounge: T45"]
+let tableType = [
+    "None": "None",
+    "Hauptbar: Office": "HT1",
+    "Hauptbar: Stufe": "HT2",
+    "Hauptbar: DJ": "HT3",
+    "Hauptbar: Vor DJ": "HT4",
+    "Hauptbar: Tanzfläche": "HT5",
+    "Hauptbar: Vor Säule": "HT6",
+    "Hauptbar: Neben Säule": "HT7",
+    "Hauptbar: Hinter Säule": "HT8",
+    "New Bar: Bar Links": "NT21",
+    "New Bar: Außen": "NT22",
+    "New Bar: Toiletten": "NT23",
+    "New Bar: Bar Rechts": "NT24",
+    "Lounge: T31": "LT31",
+    "Lounge: T32": "LT32",
+    "Lounge: T33": "LT33",
+    "Lounge: T34": "LT34",
+    "Lounge: T41": "LT41",
+    "Lounge: T42": "LT42",
+    "Lounge: T43": "LT43",
+    "Lounge: T44": "LT44",
+    "Lounge: T45": "LT45"
+]
 
 //enum TableType: Identifiable, CaseIterable, Codable {
 //    case None
@@ -66,7 +89,7 @@ struct GuestListFormView: View {
                 }
                 Section {
                     Picker("Table", selection: $tableSelection) {
-                        ForEach(tableType, id: \.self) { table in
+                        ForEach(Array(tableType.keys), id: \.self) { table in
                             Text("\(table.description)")
                         }
                     }

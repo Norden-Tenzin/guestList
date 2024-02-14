@@ -12,6 +12,7 @@ struct GuestDetailView: View {
     var guest: Guest
 
     @State var authorName: String = ""
+    @State var presentSheet: Bool = false
 
     var body: some View {
         List {
@@ -23,7 +24,11 @@ struct GuestDetailView: View {
             }
 
             Section {
-                Text(guest.tableSelection.description)
+                Button(action: {
+                    presentSheet = true
+                }, label: {
+                        Text(guest.tableSelection.description)
+                    })
             } header: {
                 Text("Reserved Table")
                     .foregroundStyle(Color(.accent))
@@ -48,5 +53,8 @@ struct GuestDetailView: View {
                 authorName = await appState.getNameFromUID(uid: guest.uid)
             }
         }
+            .sheet(isPresented: $presentSheet, content: {
+                TableDetailView(table: guest.tableSelection.description, presentSheet: $presentSheet)
+        })
     }
 }

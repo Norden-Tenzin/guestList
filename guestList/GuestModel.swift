@@ -5,8 +5,8 @@
 //  Created by Tenzin Norden on 2/3/24.
 //
 
-import Foundation
 import FirebaseFirestore
+import Foundation
 
 struct Guest: Identifiable, Codable, Equatable {
     @DocumentID var id: String?
@@ -20,7 +20,7 @@ struct Guest: Identifiable, Codable, Equatable {
     var isDiscount: Bool
     var isArchived: Bool
     var additionalInfo: String
-    
+
 //    init(uid: String, name: String, guestCount: Int, tableSelection: TableType, isVip: Bool, isFreeEntry: Bool, isDiscount: Bool) {
 //        self.uid = uid
 //        self.name = name

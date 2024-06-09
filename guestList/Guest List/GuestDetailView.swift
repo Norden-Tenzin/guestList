@@ -12,7 +12,9 @@ struct GuestDetailView: View {
     var guest: Guest
 
     @State var authorName: String = ""
-    @State var presentSheet: Bool = false
+    @State var presentTableDetail: Bool = false
+    @State var presentEditFormView: Bool = false
+    var dateSelection: Date
 
     var body: some View {
         List {
@@ -25,10 +27,13 @@ struct GuestDetailView: View {
 
             Section {
                 Button(action: {
-                    presentSheet = true
+                    presentTableDetail = true
                 }, label: {
-                        Text(guest.tableSelection.description)
-                    })
+                    Text(guest.tableSelection.description)
+                })
+                .sheet(isPresented: $presentTableDetail, content: {
+                    TableDetailView(table: guest.tableSelection.description, presentSheet: $presentTableDetail)
+                })
             } header: {
                 Text("Reserved Table")
                     .foregroundStyle(Color(.accent))
@@ -48,13 +53,22 @@ struct GuestDetailView: View {
                     .foregroundStyle(Color(.accent))
             }
         }
-            .onAppear() {
+        .toolbar(content: {
+            ToolbarItem(placement: .topBarTrailing, content: {
+                Button {
+                    presentEditFormView = true
+                } label: {
+                    Text("Edit")
+                }
+                .sheet(isPresented: $presentEditFormView, content: {
+                    GuestListFormView(presentSheet: $presentEditFormView, guest: guest, dateSelection: dateSelection, formType: .edit)
+                })
+            })
+        })
+        .onAppear {
             Task {
                 authorName = await appState.getNameFromUID(uid: guest.uid)
             }
         }
-            .sheet(isPresented: $presentSheet, content: {
-                TableDetailView(table: guest.tableSelection.description, presentSheet: $presentSheet)
-        })
     }
 }

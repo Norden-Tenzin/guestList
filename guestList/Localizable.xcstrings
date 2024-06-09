@@ -1,0 +1,127 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "%@" : {
+
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%lld" : {
+
+    },
+    "+%lld" : {
+
+    },
+    "50/50" : {
+
+    },
+    "50% Off" : {
+
+    },
+    "ADD GUEST" : {
+
+    },
+    "Additional Info" : {
+
+    },
+    "Are you sure you want to Signout?" : {
+
+    },
+    "Arrived" : {
+
+    },
+    "Author" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Edit" : {
+
+    },
+    "Email Address" : {
+
+    },
+    "First Name" : {
+
+    },
+    "Free" : {
+
+    },
+    "Free Entry" : {
+
+    },
+    "Guest Name" : {
+
+    },
+    "GUESTS" : {
+
+    },
+    "Have an Account? Login here!" : {
+
+    },
+    "Last Name" : {
+
+    },
+    "LOGIN" : {
+
+    },
+    "Name" : {
+
+    },
+    "No Account? Signup here!" : {
+
+    },
+    "Password" : {
+
+    },
+    "PERMANENT GUEST" : {
+
+    },
+    "PERMANENT GUESTS" : {
+
+    },
+    "Reserved Table" : {
+
+    },
+    "SAVE GUEST" : {
+
+    },
+    "Search" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Sign Out" : {
+
+    },
+    "SIGN UP" : {
+
+    },
+    "Table" : {
+
+    },
+    "TABLE RESERVATIONS" : {
+
+    },
+    "Total Guests" : {
+
+    },
+    "Yes" : {
+
+    }
+  },
+  "version" : "1.0"
+}

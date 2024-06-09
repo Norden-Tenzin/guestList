@@ -5,10 +5,10 @@
 //  Created by Tenzin Norden on 2/3/24.
 //
 
-import Foundation
 import Firebase
 import FirebaseFirestore
 import FirebaseMessaging
+import Foundation
 
 @Observable
 class AppState {
@@ -20,6 +20,7 @@ class AppState {
             UserDefaults.standard.set(newValue, forKey: "FIRST_NAME")
         }
     }
+
     var lastName: String {
         get {
             return UserDefaults.standard.string(forKey: "LAST_NAME") ?? ""
@@ -34,34 +35,33 @@ class AppState {
     var guests: [Guest] = [Guest]()
 
     func fetchData() {
-        db.collection("Guests").addSnapshotListener { querySnapshot, error in
+        db.collection("Guests").addSnapshotListener { querySnapshot, _ in
             guard let documents = querySnapshot?.documents else {
                 print("Error: No Documents.")
                 return
             }
 
             self.guests = documents.compactMap { queryDocumentSnapshot -> Guest? in
-                return try? queryDocumentSnapshot.data(as: Guest.self)
+                try? queryDocumentSnapshot.data(as: Guest.self)
             }
         }
     }
 
-    func addGuest(guest: Guest) {
+    func addGuest(guest: Guest) async {
         do {
             try db.collection("Guests").addDocument(from: guest)
             // TODO: ADD Notifications
-            Task {
-                var tokens: [Token] = []
-                let documents = try await db.collection("Tokens").getDocuments().documents
-                tokens = documents.compactMap { queryDocumentSnapshot -> Token? in
-                    return try? queryDocumentSnapshot.data(as: Token.self)
-                }
-                tokens = tokens.filter { token in
-                    token.id != guest.uid
-                }
-                for token in tokens {
-                    sendPushNotification(to: token.fcm_token, title: "", body: "\(getName(firstName: firstName, lastName: lastName)) added a new Guest")
-                }
+            
+            var tokens: [Token] = []
+            let documents = try await db.collection("Tokens").getDocuments().documents
+            tokens = documents.compactMap { queryDocumentSnapshot -> Token? in
+                try? queryDocumentSnapshot.data(as: Token.self)
+            }
+            tokens = tokens.filter { token in
+                token.id != guest.uid
+            }
+            for token in tokens {
+                sendPushNotification(to: token.fcm_token, title: "", body: "\(getName(firstName: firstName, lastName: lastName)) added a new Guest")
             }
         } catch {
             print(error.localizedDescription)
@@ -92,6 +92,27 @@ class AppState {
         }
     }
 
+    func updateGuest(guest: Guest) async {
+        if let id = guest.id {
+            do {
+                try await db.collection("Guests").document(id).updateData([
+                    "uid": guest.uid,
+                    "name": guest.name,
+                    "guestCount": guest.guestCount,
+                    "tableSelection": guest.tableSelection,
+                    "isVip": guest.isVip,
+                    "isFreeEntry": guest.isFreeEntry,
+                    "isDiscount": guest.isDiscount,
+//                    "isArchived": guest.isArchived,
+                    "additionalInfo": guest.additionalInfo,
+                ])
+                print("Document successfully updated")
+            } catch {
+                print("Error updating document: \(error)")
+            }
+        }
+    }
+
     func sendPushNotification(to fcm: String, title: String, body: String) {
         let serverKey = "AAAASODo0bQ:APA91bHhgLqrHpK-BEblbW1uLUuJgnuWDX6YFGM5YvcyvgbqFrSJt74EkrOnAMquUnOn3lMy-rEBOMs75e1CAMSV8U14DnRHSoVB1aeshQfHe88o8ciwKmQOIADLZ5Lx0lh9t7sEXug_"
 
@@ -108,15 +129,15 @@ class AppState {
             "to": fcm,
             "notification": [
                 "title": title,
-                "body": body
-            ]
+                "body": body,
+            ],
         ]
 
         if let jsonData = try? JSONSerialization.data(withJSONObject: requestBody) {
             request.httpBody = jsonData
 
             // Send the request
-            URLSession.shared.dataTask(with: request) { data, response, error in
+            URLSession.shared.dataTask(with: request) { data, _, error in
                 if let error = error {
                     print("Error: \(error.localizedDescription)")
                     return

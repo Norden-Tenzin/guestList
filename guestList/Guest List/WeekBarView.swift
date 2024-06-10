@@ -77,11 +77,18 @@ struct WeekBarView: View {
                 let todayIndex = dayNames.firstIndex(of: todaysDay)!
 
                 let components = calendar.dateComponents([.hour, .minute], from: today)
-                if let hour = components.hour, todayIndex == 0 {
+                if let hour = components.hour {
                     // Check if the current hour is less than 5
-                    aditionalCheck = true
-                    let yesterday = calendar.date(byAdding: .day, value: -1, to: today)!
-                    selection = yesterday
+                    if hour < 5 {
+                        if todayIndex == 0 {
+                            aditionalCheck = true
+                            let yesterday = calendar.date(byAdding: .day, value: -1, to: today)!
+                            selection = yesterday
+                        } else {
+                            let yesterday = calendar.date(byAdding: .day, value: -1, to: today)!
+                            selection = yesterday
+                        }
+                    }
                 }
 
                 dateComponents.day = index - todayIndex - (aditionalCheck ? 7 : 0)

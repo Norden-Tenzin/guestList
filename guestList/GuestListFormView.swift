@@ -23,31 +23,33 @@ import SwiftUI
 //    }
 // }
 
+let tableType = [
+    "None": "None",
+    "Hauptbar: Office": "HT1",
+    "Hauptbar: Stufe": "HT2",
+    "Hauptbar: DJ": "HT3",
+    "Hauptbar: Vor DJ": "HT4",
+    "Hauptbar: Tanzfläche": "HT5",
+    "Hauptbar: Vor Säule": "HT6",
+    "Hauptbar: Neben Säule": "HT7",
+    "Hauptbar: Hinter Säule": "HT8",
+    "New Bar: Bar Links": "NT21",
+    "New Bar: Außen": "NT22",
+    "New Bar: Toiletten": "NT23",
+    "New Bar: Bar Rechts": "NT24",
+    "Lounge: T31": "LT31",
+    "Lounge: T32": "LT32",
+    "Lounge: T33": "LT33",
+    "Lounge: T34": "LT34",
+    "Lounge: T41": "LT41",
+    "Lounge: T42": "LT42",
+    "Lounge: T43": "LT43",
+    "Lounge: T44": "LT44",
+    "Lounge: T45": "LT45",
+]
+
 func getAvailableTables(guest: Guest, guests: [Guest], dateSelection: Date) -> [String: String] {
-    var tableType = [
-        "None": "None",
-        "Hauptbar: Office": "HT1",
-        "Hauptbar: Stufe": "HT2",
-        "Hauptbar: DJ": "HT3",
-        "Hauptbar: Vor DJ": "HT4",
-        "Hauptbar: Tanzfläche": "HT5",
-        "Hauptbar: Vor Säule": "HT6",
-        "Hauptbar: Neben Säule": "HT7",
-        "Hauptbar: Hinter Säule": "HT8",
-        "New Bar: Bar Links": "NT21",
-        "New Bar: Außen": "NT22",
-        "New Bar: Toiletten": "NT23",
-        "New Bar: Bar Rechts": "NT24",
-        "Lounge: T31": "LT31",
-        "Lounge: T32": "LT32",
-        "Lounge: T33": "LT33",
-        "Lounge: T34": "LT34",
-        "Lounge: T41": "LT41",
-        "Lounge: T42": "LT42",
-        "Lounge: T43": "LT43",
-        "Lounge: T44": "LT44",
-        "Lounge: T45": "LT45",
-    ]
+    var tableType = tableType
     let selectionGuests = guests.filter { guest in
         let isDateCorrect = (getDate(date: guest.dateCreated) == getDate(date: dateSelection))
         return isDateCorrect && !guest.isArchived

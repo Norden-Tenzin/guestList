@@ -14,9 +14,9 @@ struct TableDetailView: View {
     var body: some View {
         VStack {
             Spacer()
-//            Image(tableType[table] ?? "")
-//                .resizable()
-//                .aspectRatio(contentMode: .fit)
+            Image(tableType[table] ?? "")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
             Spacer()
         }
             .overlay(alignment: .topLeading) {
